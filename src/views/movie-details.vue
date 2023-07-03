@@ -36,7 +36,7 @@ onMounted(() => {
 <style lang="scss" scoped>
 img {
   width: 300px;
-  height: 450px; /* Adjust this to your desired height */
+  height: 450px;
   object-fit: cover;
 }
 </style>
