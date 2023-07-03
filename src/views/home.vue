@@ -15,6 +15,7 @@ onMounted(async () => {
 });
 </script>
 
+
 <template>
   <main>
     <h2>VOIR LES DERNIERS FILMS TOUT GENRE EN STREAMING VF OU VOSTFR</h2>
