@@ -30,14 +30,7 @@ onMounted(() => {
       alt="hello"
       class="movie-image"
   />
-  <!--  <div>
-      {{ movie }}
-
-      &lt;!&ndash;
-          <img
-              :src="`http://image.tmdb.org/t/p/w500${movie.backdrop_path}`" alt="">
-      &ndash;&gt;
-    </div>-->
+ 
 </template>
 
 <style lang="scss" scoped>
