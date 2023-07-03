@@ -19,6 +19,8 @@ onMounted(async () => {
 
 <!-- un deuxième commentaire -->
 
+<!-- un troisième commentaire -->
+
 <template>
   <main>
     <h2>VOIR LES DERNIERS FILMS TOUT GENRE EN STREAMING VF OU VOSTFR</h2>
