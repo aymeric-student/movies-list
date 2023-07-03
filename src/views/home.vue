@@ -22,6 +22,8 @@ onMounted(async () => {
   </main>
 </template>
 
+<!-- je test un commentaire -->
+
 <style lang="scss">
 main {
   background: #171717;
