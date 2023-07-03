@@ -29,6 +29,8 @@ onMounted(async () => {
 <!-- je test avec un troisième commentaire -->
 
 <!-- je test avec un quatrième commentaire -->
+
+<!-- et la je suis un commentaire -->
 <style lang="scss">
 main {
   background: #171717;
