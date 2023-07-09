@@ -16,10 +16,15 @@ const routes: Array<RouteRecordRaw> = [
     {
         path: '/top-rated',
         component: TopRated
+
     },
     {
         path: "/movie-details/:id",
         component: MovieDetails
+    },
+    {
+        path: '/:catchAll(.*)',
+        redirect: '/'
     }
 ];
 
