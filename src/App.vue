@@ -12,6 +12,7 @@
 import Sidebar from './components/sidebar.vue'
 import Header from "./components/header.vue"</script>
 
+
 <style lang="scss" scoped>
 .app {
   display: flex;

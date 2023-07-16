@@ -6,15 +6,23 @@
       <font-awesome-icon class="input__search-icon" icon="magnifying-glass"/>
     </div>
     <nav>
+      <!--      <ul>
+              <li>
+                <router-link to="/">Accueil</router-link>
+              </li>
+              <li>
+                <router-link to="/popular">Popular</router-link>
+              </li>
+              <li>
+                <router-link to="/top-rated">Watchlist</router-link>
+              </li>
+            </ul>-->
       <ul>
         <li>
-          <router-link to="/">Accueil</router-link>
+          <router-link to="/signup">Inscription</router-link>
         </li>
         <li>
-          <router-link to="/popular">Popular</router-link>
-        </li>
-        <li>
-          <router-link to="/top-rated">Watchlist</router-link>
+          <router-link to="/login">Connexion</router-link>
         </li>
       </ul>
     </nav>

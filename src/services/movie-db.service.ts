@@ -48,6 +48,16 @@ class MovieService {
             throw new Error(error);
         }
     }
+
+    public async fetchSimilarMovies(movie_id: string) {
+        try {
+            const url = `movie/${movie_id}/similar`;
+            const res: AxiosResponse<MoviesResponse> = await this.api.get(url);
+            return res.data.results;
+        } catch (error) {
+            throw new Error(error);
+        }
+    }
 }
 
 const language = "en-US";

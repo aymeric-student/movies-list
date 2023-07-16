@@ -14,10 +14,12 @@
     "@fortawesome/free-regular-svg-icons": "^6.4.0",
     "@fortawesome/free-solid-svg-icons": "^6.4.0",
     "@fortawesome/vue-fontawesome": "^3.0.3",
+    "@supabase/supabase-js": "^2.26.0",
     "axios": "^1.4.0",
     "scss": "^0.2.4",
     "vue": "^3.2.47",
-    "vue-router": "^4.2.2"
+    "vue-router": "^4.2.4",
+    "vuetify": "^3.3.8"
   },
   "devDependencies": {
     "@types/vue-router": "^2.0.0",

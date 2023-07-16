@@ -4,10 +4,13 @@ import {onMounted, ref} from 'vue';
 import MovieService from '../services/movie-db.service';
 import DateConverter from "../utils/Date.util";
 import {Cast} from "../interface/Cast";
+import {MovieInterface} from "../interface/Movie";
+import ListMovies from "../components/MovieListComponent.vue";
 
 const movie = ref<any>();
 const dateConverter = new DateConverter();
 let actorsMovies = ref<Cast[]>([])
+const moviesSimilar = ref<MovieInterface[]>([]);
 
 const fetchMovieDetails = async (id: string) => {
   try {
@@ -19,17 +22,18 @@ const fetchMovieDetails = async (id: string) => {
     for (let actor of actors.cast.slice(0, 3)) {
       actorsMovies.value.push(actor)
     }
-    
+
   } catch (error) {
     throw new Error(error);
   }
 };
 
-onMounted(() => {
+
+onMounted(async () => {
   const route = useRoute();
   const id = route.params.id;
-
-  fetchMovieDetails(id as string);
+  moviesSimilar.value = await MovieService.fetchSimilarMovies(id as string);
+  await fetchMovieDetails(id as string);
 });
 </script>
 
@@ -55,8 +59,13 @@ onMounted(() => {
         <p> {{ movie?.overview }}</p>
       </div>
     </div>
+    <div class="container-similar">
+      <h4>Similar movies</h4>
+      <list-movies :movies="moviesSimilar"/>
+    </div>
   </div>
 </template>
+
 
 <style lang="scss" scoped>
 
@@ -64,6 +73,7 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   align-items: center;
+  overflow: auto;
 
   img {
     min-width: 270px;
@@ -84,6 +94,42 @@ onMounted(() => {
 
       &:nth-child(odd):not(:last-child) {
         background-color: #222222;
+      }
+    }
+  }
+}
+
+.container-similar {
+
+  h4 {
+    color: #999fbc;
+    font-size: 26px;
+    text-align: center;
+  }
+
+  .similar-movies {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+
+    .similar-movie {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 3rem;
+      width: 200px;
+
+      img {
+        height: auto;
+        width: 100%;
+        object-fit: contain;
+      }
+
+      p {
+        font-size: 19px;
+        margin-top: 0.5rem;
+        color: #999fbc;
       }
     }
   }

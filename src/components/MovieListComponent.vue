@@ -1,8 +1,8 @@
 <template>
   <div>
     <ul class="container-movies">
-      <movie v-for="(movie, index) in movies" :key="index" :movie="movie" class="movie-card"
-             @click="goToSingleMovie(movie)"/>
+      <movie v-for="(movie, index) in movies" :key="index" :movie="movie" class="movie-card"/>
+      <!--             @click="goToSingleMovie(movie)"-->
     </ul>
   </div>
 </template>
@@ -11,18 +11,17 @@
 import {defineProps} from "vue";
 import Movie from "../components/movie.vue"
 import {MovieInterface} from "../interface/Movie";
-import {useRoute, useRouter} from 'vue-router'
+import {useRouter} from 'vue-router'
 
 const router = useRouter()
-const route = useRoute()
 
 const props = defineProps({
   movies: Array as () => MovieInterface[]
 });
 
-const goToSingleMovie = (movie: MovieInterface) => {
+/*const goToSingleMovie = (movie: MovieInterface) => {
   router.push(`/movie-details/${movie.id}`)
-}
+}*/
 </script>
 
 <style lang="scss" scoped>

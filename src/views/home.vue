@@ -34,7 +34,5 @@ main {
     padding-top: 1rem;
   }
 }
-
-
 </style>
 
