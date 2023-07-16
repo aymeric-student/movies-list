@@ -12,12 +12,7 @@
 <script lang="ts" setup>
 import SupabaseService from "../services/database.service";
 import {ref} from "vue";
-
-interface User {
-  name: string,
-  email: string,
-  password: string
-}
+import {User} from "../interface/user";
 
 const user = ref<User>({
   name: "",
@@ -96,5 +91,4 @@ const login = async () => {
     }
   }
 }
-
 </style>

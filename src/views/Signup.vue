@@ -16,12 +16,7 @@ import {useRouter} from "vue-router";
 import {onMounted, ref} from "vue";
 import supabase from "../lib/supabase";
 import SupabaseService from "../services/database.service";
-
-interface User {
-  name: string,
-  email: string,
-  password: string
-}
+import {User} from "../interface/user";
 
 const user = ref<User>({
   name: "",
