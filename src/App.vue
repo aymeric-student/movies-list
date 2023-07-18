@@ -2,7 +2,7 @@
   <div class="app">
     <Header/>
     <div class="body">
-      <Sidebar class="aside"/>
+      <Sidebar v-if="logged" class="aside"/>
       <router-view></router-view>
     </div>
   </div>
@@ -10,7 +10,25 @@
 
 <script lang="ts" setup>
 import Sidebar from './components/sidebar.vue'
-import Header from "./components/header.vue"</script>
+import Header from "./components/header.vue"
+import {ref, watch} from "vue";
+import {LoggedStore} from "./stores/auth.store";
+import {storeToRefs} from "pinia";
+import {useRouter} from "vue-router";
+
+const router = useRouter()
+
+
+const test = LoggedStore()
+const logged = ref<boolean>()
+
+const {loggedValue} = storeToRefs(test)
+
+watch(loggedValue, (value) => {
+  console.log(value)
+  logged.value = value as boolean
+})
+</script>
 
 
 <style lang="scss" scoped>

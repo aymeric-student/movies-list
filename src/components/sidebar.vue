@@ -3,6 +3,7 @@ import {onMounted, ref} from "vue";
 import MovieService from "../services/movie-db.service";
 import {Gender} from "../interface/Gender";
 
+
 const genders = ref<Gender[]>([]);
 
 onMounted(async () => {
