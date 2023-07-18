@@ -3,16 +3,22 @@
     <h1>Connexion</h1>
     <form action="signup" @submit.prevent="login">
       <v-text-field v-model="user.email" label="Email" variant="outlined"></v-text-field>
-      <v-text-field v-model="user.password" label="Password" variant="outlined"></v-text-field>
-      <button type="submit">S'inscrire</button>
+      <v-text-field v-model="user.password" label="Password" type="password" variant="outlined"></v-text-field>
+      <button type="submit">Connexion</button>
     </form>
   </div>
 </template>
 
 <script lang="ts" setup>
-import SupabaseService from "../services/database.service";
 import {ref} from "vue";
 import {User} from "../interface/user";
+import SupabaseService from "../services/database.service";
+import {useRouter} from "vue-router";
+
+import {LoggedStore} from "../stores/auth.store";
+
+const router = useRouter()
+const test = LoggedStore()
 
 const user = ref<User>({
   name: "",
@@ -24,15 +30,18 @@ const login = async () => {
   try {
     const users = {
       email: user.value.email,
-      password: user.value.password
+      password: user.value.password,
     }
-
-    await SupabaseService.login(users.email, users.password)
-
+    const logged = await SupabaseService.login(users.email, users.password)
+    if (logged.length > 0) {
+      test.checkAuth()
+      await router.push("/");
+    }
   } catch (error) {
     throw new Error(error);
   }
 };
+
 </script>
 
 
@@ -56,25 +65,6 @@ const login = async () => {
     margin: 0 auto;
     padding: 2rem;
     border-radius: 9px;
-
-    .inputs {
-      display: flex;
-      flex-direction: column;
-      margin-bottom: 1rem;
-
-      label {
-        color: #fff;
-        margin-bottom: 0.5rem;
-      }
-
-      input {
-        height: 40px;
-        border: none;
-        border-radius: 9px;
-        padding: 0 0.5rem;
-        outline: none;
-      }
-    }
 
     button[type="submit"] {
       background-color: #222222;

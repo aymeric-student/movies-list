@@ -4,8 +4,8 @@
     <form action="signup" @submit.prevent="signup">
       <v-text-field v-model="user.name" label="Username" variant="outlined"></v-text-field>
       <v-text-field v-model="user.email" label="Email" variant="outlined"></v-text-field>
-      <v-text-field v-model="user.password" label="Password" variant="outlined"></v-text-field>
-      <v-text-field label="Confirm password" variant="outlined"></v-text-field>
+      <v-text-field v-model="user.password" label="Password" type="password" variant="outlined"></v-text-field>
+      <v-text-field label="Confirm password" type="password" variant="outlined"></v-text-field>
       <button type="submit">S'inscrire</button>
     </form>
   </div>

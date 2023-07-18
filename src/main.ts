@@ -4,11 +4,12 @@ import App from './App.vue'
 import router from "../src/router/router"
 import {FontAwesomeIcon} from './lib/fontawesome'
 import vuetify from './lib/vuetify'
-/*
-import '@mdi/font/css/materialdesignicons.css'
-*/
-/*
-import 'vuetify/styles'
-*/
+import {createPinia} from 'pinia'
 
-createApp(App).use(router).use(vuetify).component('font-awesome-icon', FontAwesomeIcon).mount('#app');
+const pinia = createPinia()
+
+createApp(App).use(router)
+    .use(pinia)
+    .use(vuetify)
+    .component('font-awesome-icon', FontAwesomeIcon)
+    .mount('#app');

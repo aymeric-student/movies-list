@@ -31,16 +31,14 @@ class SupabaseService {
             .select("*")
             .eq("email", email)
 
-        console.log("hello")
-        console.log("data : ", data)
-
-        if (data) {
-            console.log("user is connected")
-        }
-
         if (error) {
             throw new Error(error.message);
         }
+
+        /*console.log("je suis la")*/
+
+        /*localStorage.setItem('isLoggedIn', 'true');*/
+        return data;
     }
 }
 

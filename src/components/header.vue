@@ -6,18 +6,21 @@
       <font-awesome-icon class="input__search-icon" icon="magnifying-glass"/>
     </div>
     <nav>
-      <!--      <ul>
-              <li>
-                <router-link to="/">Accueil</router-link>
-              </li>
-              <li>
-                <router-link to="/popular">Popular</router-link>
-              </li>
-              <li>
-                <router-link to="/top-rated">Watchlist</router-link>
-              </li>
-            </ul>-->
-      <ul>
+      <ul v-if="logged">
+        <li>
+          <router-link to="/">Accueil</router-link>
+        </li>
+        <li>
+          <router-link to="/popular">Popular</router-link>
+        </li>
+        <li>
+          <router-link to="/top-rated">Watchlist</router-link>
+        </li>
+        <li>
+          <button @click="logout()">logout</button>
+        </li>
+      </ul>
+      <ul v-if="!logged">
         <li>
           <router-link to="/signup">Inscription</router-link>
         </li>
@@ -28,6 +31,32 @@
     </nav>
   </header>
 </template>
+
+<script lang="ts" setup>
+import {ref, watch} from "vue";
+import {LoggedStore} from "../stores/auth.store";
+import {storeToRefs} from "pinia";
+import {useRouter} from "vue-router";
+
+const router = useRouter()
+
+
+const test = LoggedStore()
+const logged = ref<boolean>()
+
+const {loggedValue} = storeToRefs(test)
+
+watch(loggedValue, (value) => {
+  console.log(value)
+  logged.value = value as boolean
+})
+
+const logout = () => {
+  test.checkAuth()
+  router.push("/login")
+}
+
+</script>
 
 
 <style lang="scss" scoped>
