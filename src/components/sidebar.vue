@@ -38,8 +38,10 @@ onMounted(async () => {
 
 <style lang="scss" scoped>
 aside {
+  z-index: 1;
   background-color: #222222;
   height: 90vh;
+  min-width: 200px;
 
   .aside__menu-list {
     padding-top: 15px;

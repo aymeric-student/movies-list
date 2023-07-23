@@ -6,42 +6,63 @@
       <v-text-field v-model="user.email" label="Email" variant="outlined"></v-text-field>
       <v-text-field v-model="user.password" label="Password" type="password" variant="outlined"></v-text-field>
       <v-text-field label="Confirm password" type="password" variant="outlined"></v-text-field>
+      <v-file-input label="user-picture" type="file" variant="outlined" @change="onFileChange"></v-file-input>
       <button type="submit">S'inscrire</button>
     </form>
   </div>
 </template>
 
 <script lang="ts" setup>
-import {useRouter} from "vue-router";
-import {onMounted, ref} from "vue";
-import supabase from "../lib/supabase";
-import SupabaseService from "../services/database.service";
+import {ref} from "vue";
 import {User} from "../interface/user";
+import DatabaseService from "../services/database.service";
+import supabase from "../lib/supabase";
+import {v4 as uuidv4} from "uuid";
 
 const user = ref<User>({
   name: "",
   email: "",
   password: "",
 });
-const router = useRouter()
+
+const file = ref<File | null>(null);
+
+const onFileChange = (event: Event) => {
+  const inputElement = event.target as HTMLInputElement;
+  if (inputElement?.files && inputElement.files.length > 0) {
+    file.value = inputElement?.files[0] as unknown as File;
+  }
+};
+
+const saveFileToBucket = async (file, picture_id) => {
+  try {
+    if (!file) return;
+
+    const {data} = await supabase.storage
+        .from('movie-app')
+        .upload(`users-${picture_id}`, file, {
+          contentType: file.type,
+        });
+
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
 
 const signup = async () => {
   try {
     const users = {
       name: user.value.name,
       email: user.value.email,
-      password: user.value.password
-    }
-    await SupabaseService.signup(users.name, users.email, users.password)
+      password: user.value.password,
+    };
+    const picture_id = uuidv4() as string;
+    await DatabaseService.signup(users.name, users.email, users.password, picture_id)
+    await saveFileToBucket(file.value, picture_id);
   } catch (error) {
     throw new Error(error);
   }
 };
-
-onMounted(async () => {
-  const {data, error} = await supabase.from("users_table").select("*");
-});
-
 </script>
 
 <style lang="scss" scoped>

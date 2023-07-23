@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import {onMounted, ref} from "vue";
+import Sidebar from "../components/Sidebar.vue";
 import MovieService from "../services/movie-db.service";
 import MovieListComponent from "../components/MovieListComponent.vue"
 import {MovieInterface} from "../interface/Movie";
@@ -16,6 +17,7 @@ onMounted(async () => {
 </script>
 
 <template>
+  <Sidebar class="aside"/>
   <main>
     <h2>VOIR LES DERNIERS FILMS TOUT GENRE EN STREAMING VF OU VOSTFR</h2>
     <movie-list-component :movies="movies"/>
@@ -26,7 +28,6 @@ onMounted(async () => {
 main {
   background: #171717;
   width: 100%;
-
 
   h2 {
     padding-left: 1rem;

@@ -32,8 +32,10 @@ const login = async () => {
       email: user.value.email,
       password: user.value.password,
     }
+
     const logged = await SupabaseService.login(users.email, users.password)
     if (logged.length > 0) {
+      localStorage.setItem("logged", "true")
       test.checkAuth()
       await router.push("/");
     }

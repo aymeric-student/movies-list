@@ -2,13 +2,6 @@ import {defineStore} from 'pinia';
 import {computed, ref} from "vue";
 
 export const LoggedStore = defineStore('auth', () => {
-
-    interface todo {
-        name: string,
-        done: boolean
-    }
-
-    const todos = ref<todo[]>([]);
     const logged = ref<boolean>(false);
 
     function checkAuth() {
@@ -20,7 +13,6 @@ export const LoggedStore = defineStore('auth', () => {
     })
 
     return {
-        todos,
         checkAuth,
         loggedValue
     }

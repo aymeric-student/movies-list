@@ -1,59 +1,42 @@
-import createAPI from "../lib/axios.js";
-import {AxiosResponse} from "axios";
+import {GenderResponse, MoviesResponse} from "../interface/ResponseApi";
 import {Gender} from "../interface/Gender";
 import {MovieInterface} from "../interface/Movie";
-import {GenderResponse, MoviesResponse} from "../interface/ResponseApi";
 import {ActorsResponse} from "../interface/Cast";
+import {AxiosResponse} from "axios";
+import createAPI from "../lib/axios";
 
 class MovieService {
     constructor(private readonly api) {
     }
 
     public async fetchGenres(): Promise<Gender[]> {
-        try {
-            const url = "genre/movie/list";
-            const res: AxiosResponse<GenderResponse> = await this.api.get(url);
-            return res.data.genres;
-        } catch (error) {
-            throw new Error(error);
-        }
+        return this.fetch<GenderResponse>("genre/movie/list").then(res => res.genres);
     }
 
     public async fetchMovies(typeMovie: string): Promise<MovieInterface[]> {
-        try {
-            const url = `movie/${typeMovie}`;
-            const res: AxiosResponse<MoviesResponse> = await this.api.get(url);
-            return res.data.results;
-        } catch (error) {
-            throw new Error(error);
-        }
+        return this.fetch<MoviesResponse>(`movie/${typeMovie}`).then(res => res.results);
     }
 
     public async fetchMovie(movie_id: string): Promise<MovieInterface> {
-        try {
-            const url = `movie/${movie_id}`;
-            const res: AxiosResponse<MovieInterface> = await this.api.get(url);
-            return res.data;
-        } catch (error) {
-            throw new Error(error);
-        }
+        return this.fetch<MovieInterface>(`movie/${movie_id}`);
     }
 
     public async fetchActors(movie_id: string) {
-        try {
-            const url = `movie/${movie_id}/credits`;
-            const res: AxiosResponse<ActorsResponse> = await this.api.get(url);
-            return res.data;
-        } catch (error) {
-            throw new Error(error);
-        }
+        return this.fetch<ActorsResponse>(`movie/${movie_id}/credits`);
     }
 
     public async fetchSimilarMovies(movie_id: string) {
+        return this.fetch<MoviesResponse>(`movie/${movie_id}/similar`).then(res => res.results);
+    }
+
+    public async searchMovies(movieName: string): Promise<MovieInterface[]> {
+        return this.fetch<MoviesResponse>(`search/movie?query=${movieName}`).then(res => res.results);
+    }
+
+    private async fetch<T>(url: string): Promise<T> {
         try {
-            const url = `movie/${movie_id}/similar`;
-            const res: AxiosResponse<MoviesResponse> = await this.api.get(url);
-            return res.data.results;
+            const res: AxiosResponse<T> = await this.api.get(url);
+            return res.data;
         } catch (error) {
             throw new Error(error);
         }
