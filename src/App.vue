@@ -1,6 +1,6 @@
 <template>
   <div class="app">
-    <Header @search-text="handleSearchText($event)"/>
+    <Header @movie-type="handleMovieType($event)" @search-text="handleSearchText($event)"/>
 
     <div id="modal-container"></div>
 
@@ -11,7 +11,8 @@
     </div>
 
     <div class="body">
-      <router-view></router-view>
+      <router-view :movie-type="movieTypeSelected"
+      ></router-view>
     </div>
   </div>
 </template>
@@ -31,6 +32,11 @@ const text = ref<string>()
 
 const logged = ref<boolean>()
 const showModal = ref(false);
+const movieTypeSelected = ref<string>()
+
+const handleMovieType = (movieType: string) => {
+  movieTypeSelected.value = movieType
+}
 
 const handleSearchText = (searchText: string) => {
   text.value = searchText
@@ -74,7 +80,7 @@ onMounted(async () => {
   color: #fff;
   width: 100%;
   z-index: 1;
-  height: 100vh;
+  max-height: 100vh;
 
   .modal-background {
     position: absolute;
@@ -82,8 +88,6 @@ onMounted(async () => {
     left: 50%;
     z-index: 3;
     transform: translate(-50%, -50%);
-    /*    width: 100%;
-        height: 100%;*/
     display: flex;
     align-items: center;
     justify-content: center;
@@ -100,7 +104,6 @@ onMounted(async () => {
 
   .body {
     display: flex;
-    /*height: 90vh;*/
 
     .aside {
       min-width: 200px;

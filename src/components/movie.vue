@@ -24,13 +24,10 @@ watch(() => props.movie, (newMovie) => {
 
 const fetchMovieDetails = () => {
   movie.value = props.movie;
-  console.log("hello")
 };
 
 const goToSingleMovie = () => {
-  console.log(props.movie.id)
-  console.log(props.movie)
-  /*router.push(`/movie-details/${props.movie.id}`);*/
+  router.push(`/movie-details/${props.movie.id}`);
 }
 </script>
 

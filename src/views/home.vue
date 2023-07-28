@@ -1,27 +1,40 @@
 <script lang="ts" setup>
-import {onMounted, ref, watch} from "vue";
+import {defineProps, onMounted, ref, watch} from "vue";
 import Sidebar from "../components/Sidebar.vue";
 import MovieService from "../services/movie-db.service";
 import MovieListComponent from "../components/MovieListComponent.vue"
 import {MovieInterface} from "../interface/Movie";
 import supabase from "../lib/supabase";
 
+
 const movies = ref<MovieInterface[]>([]);
 
 const genderSelected = ref<string>()
+
+const props = defineProps<{ movieType: string }>();
 
 const handleGenreSelected = (genre) => {
   genderSelected.value = genre.id
 }
 
 watch(genderSelected, async (newGender) => {
-  console.log("newGender : ", newGender)
-  console.log(newGender)
   if (newGender) {
     movies.value = await MovieService.fetchMoviesByGenre(newGender)
   }
 })
 
+watch(() => props.movieType, async (value) => {
+  console.log("depuis le home : ", value)
+  if (value) {
+    try {
+      movies.value = await MovieService.fetchMovies(value);
+    } catch (error) {
+      console.error(error);
+    }
+  } else {
+    movies.value = [];
+  }
+})
 
 onMounted(async () => {
   try {

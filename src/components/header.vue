@@ -4,20 +4,13 @@
       <img v-if="logged" :src="url" alt="user picture">
       <h1>E-movie</h1>
 
-
       <v-text-field v-show="logged" v-model="searchMovie" class="input-search" label="search movie"
                     variant="outlined" @input="emitSearchText"></v-text-field>
       <nav>
         <ul v-if="logged">
-
-          <li>
-            <router-link to="/">Accueil</router-link>
-          </li>
-          <li>
-            <router-link to="/popular">Popular</router-link>
-          </li>
-          <li>
-            <router-link to="/top-rated">Watchlist</router-link>
+          <li v-for="(movieType, index) in movieTypes" :key="index" @click="emitMovieType(movieType)"> {{
+              movieType
+            }}
           </li>
           <li>
             <button @click="logout()">logout</button>
@@ -45,14 +38,20 @@ import supabase from "../lib/supabase";
 
 const router = useRouter()
 
+const movieTypes = ref(['now_playing', 'popular', 'top_rated'])
+
+const emit = defineEmits(["search-text", "movie-type"]);
+
+const emitMovieType = (movieType) => {
+  emit("movie-type", movieType)
+  router.push("/")
+}
+
 const store = LoggedStore()
 const logged = ref<boolean>()
-let {checkAuth,} = LoggedStore()
-let {loggedValue, linkPicture} = storeToRefs(store)
+let {loggedValue} = storeToRefs(store)
 const searchMovie = ref<string>()
 
-
-const emit = defineEmits(["search-text"]);
 const url = ref<string>()
 const emitSearchText = () => {
   emit("search-text", searchMovie.value)
@@ -60,8 +59,6 @@ const emitSearchText = () => {
 
 watch(loggedValue, (value) => {
   logged.value = value as boolean
-  console.log("picture : ", linkPicture.value)
-
 })
 
 const logout = async () => {
