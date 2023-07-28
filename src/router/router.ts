@@ -56,6 +56,8 @@ const checkTokenAndNavigation = (to, from, next) => {
     }
 };
 
+/*
 router.beforeEach(checkTokenAndNavigation);
+*/
 
 export default router;

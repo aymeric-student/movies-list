@@ -1,8 +1,8 @@
 <template>
   <div @click="goToSingleMovie()">
-    <img :src="`https://image.tmdb.org/t/p/w500${movie.poster_path}`" alt="">
+    <img v-if="movie && movie.poster_path" :src="`https://image.tmdb.org/t/p/w500${movie.poster_path}`" alt="">
     <div class="movie__info">
-      <h4>{{ movie.original_title }}</h4>
+      <h4 v-if="movie && movie.original_title">{{ movie.original_title }}</h4>
     </div>
   </div>
 </template>
@@ -17,20 +17,20 @@ const props = defineProps<{
   movie: MovieInterface;
 }>();
 const movie = ref<MovieInterface>(props.movie);
-const newMovie = ref<MovieInterface>()
 
-watch(() => props.movie.id, (newId) => {
-  fetchMovieDetails(newId);
-});
+watch(() => props.movie, (newMovie) => {
+  fetchMovieDetails();
+})
 
-const fetchMovieDetails = (id: number) => {
-  movie.value = newMovie.value;
+const fetchMovieDetails = () => {
+  movie.value = props.movie;
+  console.log("hello")
 };
 
 const goToSingleMovie = () => {
   console.log(props.movie.id)
-  /*router.push(`/movie-details/${props.movie.id}`)
-  router.push(`/movie-details/${props.movie.id}`);*/
+  console.log(props.movie)
+  /*router.push(`/movie-details/${props.movie.id}`);*/
 }
 </script>
 

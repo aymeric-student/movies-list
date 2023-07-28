@@ -1,10 +1,16 @@
 <script lang="ts" setup>
-import {onMounted, ref} from "vue";
+import {defineEmits, onMounted, ref} from "vue";
 import MovieService from "../services/movie-db.service";
 import {Gender} from "../interface/Gender";
 
-
 const genders = ref<Gender[]>([]);
+
+const emit = defineEmits(['genreSelected']);
+
+const getGender = (genre) => {
+  emit('genreSelected', genre)
+}
+
 
 onMounted(async () => {
   try {
@@ -29,7 +35,7 @@ onMounted(async () => {
     <div class="aside__menu-list">
       <h2>Catégories de films</h2>
       <ul>
-        <li v-for="(genre, index) in genders" :key="index"><span>{{ genre.name }}</span></li>
+        <li v-for="(genre, index) in genders" :key="index" @click="getGender(genre)"><span>{{ genre.name }}</span></li>
       </ul>
     </div>
   </aside>

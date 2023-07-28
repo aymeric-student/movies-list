@@ -15,9 +15,10 @@
 <script lang="ts" setup>
 import {ref} from "vue";
 import {User} from "../interface/user";
-import DatabaseService from "../services/database.service";
 import supabase from "../lib/supabase";
 import {v4 as uuidv4} from "uuid";
+import router from "../router/router";
+import {LoggedStore} from "../stores/auth.store";
 
 const user = ref<User>({
   name: "",
@@ -27,6 +28,9 @@ const user = ref<User>({
 
 const file = ref<File | null>(null);
 
+const {checkAuth} = LoggedStore()
+
+
 const onFileChange = (event: Event) => {
   const inputElement = event.target as HTMLInputElement;
   if (inputElement?.files && inputElement.files.length > 0) {
@@ -35,34 +39,57 @@ const onFileChange = (event: Event) => {
 };
 
 const saveFileToBucket = async (file, picture_id) => {
+  let data = null;
   try {
     if (!file) return;
 
-    const {data} = await supabase.storage
+    data = await supabase.storage
         .from('movie-app')
         .upload(`users-${picture_id}`, file, {
           contentType: file.type,
         });
 
+
   } catch (error) {
     throw new Error(error.message);
   }
+  return data.data;
 };
 
 const signup = async () => {
   try {
-    const users = {
-      name: user.value.name,
+
+    const picture_id = uuidv4() as string;
+    await saveFileToBucket(file.value, picture_id);
+
+    const bucketId = "movie-app"
+
+
+    const picture = `users-${picture_id}`
+
+    const result = await supabase.auth.signUp({
       email: user.value.email,
       password: user.value.password,
-    };
-    const picture_id = uuidv4() as string;
-    await DatabaseService.signup(users.name, users.email, users.password, picture_id)
-    await saveFileToBucket(file.value, picture_id);
+      options: {
+        data: {
+          picture: `https://ragkqnstwcincednpyaz.supabase.co/storage/v1/object/public/${bucketId}/${picture}`
+        }
+      }
+    })
+
+    if (result.data) {
+      checkAuth()
+      await router.push("/")
+    }
+
+
   } catch (error) {
     throw new Error(error);
   }
+
 };
+
+
 </script>
 
 <style lang="scss" scoped>
@@ -120,5 +147,4 @@ const signup = async () => {
     }
   }
 }
-
 </style>

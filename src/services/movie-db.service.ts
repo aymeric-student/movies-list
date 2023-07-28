@@ -33,6 +33,10 @@ class MovieService {
         return this.fetch<MoviesResponse>(`search/movie?query=${movieName}`).then(res => res.results);
     }
 
+    public async fetchMoviesByGenre(genre: string): Promise<MovieInterface[]> {
+        return this.fetch<MoviesResponse>(`genre/${genre}/movies`).then(res => res.results);
+    }
+
     private async fetch<T>(url: string): Promise<T> {
         try {
             const res: AxiosResponse<T> = await this.api.get(url);
@@ -47,3 +51,5 @@ const language = "en-US";
 const api = createAPI(language);
 
 export default new MovieService(api);
+
+

@@ -8,7 +8,7 @@
 </template>
 
 <script lang="ts" setup>
-import {defineProps} from "vue";
+import {defineProps, watch} from "vue";
 import Movie from "../components/movie.vue"
 import {MovieInterface} from "../interface/Movie";
 import {useRouter} from 'vue-router'
@@ -19,9 +19,9 @@ const props = defineProps({
   movies: Array as () => MovieInterface[]
 });
 
-/*const goToSingleMovie = (movie: MovieInterface) => {
-  router.push(`/movie-details/${movie.id}`)
-}*/
+watch(() => props.movies, (newMovies) => {
+  props.movies = newMovies;
+});
 </script>
 
 <style lang="scss" scoped>

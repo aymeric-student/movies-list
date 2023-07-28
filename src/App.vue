@@ -45,12 +45,15 @@ watch(loggedValue, (check) => {
   logged.value = check as boolean
 })
 
-/*watch(text, (value) => {
-  console.log("text = ", value)
-})*/
 
-
-onMounted(() => {
+onMounted(async () => {
+  /*
+    await supabase.auth.signOut()
+  */
+  /*
+    if (user) {
+      console.log("user : ", user)
+    }*/
   if (localStorage.getItem('logged') === 'true') {
     logged.value = true
   } else {

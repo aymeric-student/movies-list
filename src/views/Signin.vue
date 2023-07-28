@@ -12,13 +12,13 @@
 <script lang="ts" setup>
 import {ref} from "vue";
 import {User} from "../interface/user";
-import SupabaseService from "../services/database.service";
 import {useRouter} from "vue-router";
 
 import {LoggedStore} from "../stores/auth.store";
+import supabase from "../lib/supabase";
 
 const router = useRouter()
-const test = LoggedStore()
+let {checkAuth} = LoggedStore()
 
 const user = ref<User>({
   name: "",
@@ -28,17 +28,20 @@ const user = ref<User>({
 
 const login = async () => {
   try {
-    const users = {
+
+
+    localStorage.setItem("logged", "true")
+
+    const {auth, error} = await supabase.auth.signInWithPassword({
       email: user.value.email,
       password: user.value.password,
+    })
+
+    if (!error) {
+      checkAuth()
+      await router.push("/")
     }
 
-    const logged = await SupabaseService.login(users.email, users.password)
-    if (logged.length > 0) {
-      localStorage.setItem("logged", "true")
-      test.checkAuth()
-      await router.push("/");
-    }
   } catch (error) {
     throw new Error(error);
   }

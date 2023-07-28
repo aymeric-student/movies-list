@@ -34,6 +34,7 @@ class SupabaseService {
             .select("*")
             .eq("email", email)
 
+
         if (error) {
             throw new Error(error.message);
         }

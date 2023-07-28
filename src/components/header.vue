@@ -1,14 +1,15 @@
 <template>
   <div class="test">
     <header>
+      <img v-if="logged" :src="url" alt="user picture">
       <h1>E-movie</h1>
+
+
       <v-text-field v-show="logged" v-model="searchMovie" class="input-search" label="search movie"
                     variant="outlined" @input="emitSearchText"></v-text-field>
       <nav>
         <ul v-if="logged">
-          <li>
-            <img alt="user picture" src="a">
-          </li>
+
           <li>
             <router-link to="/">Accueil</router-link>
           </li>
@@ -40,32 +41,40 @@ import {defineEmits, onMounted, ref, watch} from "vue";
 import {LoggedStore} from "../stores/auth.store";
 import {storeToRefs} from "pinia";
 import {useRouter} from "vue-router";
+import supabase from "../lib/supabase";
 
 const router = useRouter()
 
 const store = LoggedStore()
 const logged = ref<boolean>()
-
-const {loggedValue} = storeToRefs(store)
+let {checkAuth,} = LoggedStore()
+let {loggedValue, linkPicture} = storeToRefs(store)
 const searchMovie = ref<string>()
 
-const emit = defineEmits(["search-text"]);
 
+const emit = defineEmits(["search-text"]);
+const url = ref<string>()
 const emitSearchText = () => {
   emit("search-text", searchMovie.value)
 };
 
 watch(loggedValue, (value) => {
   logged.value = value as boolean
+  console.log("picture : ", linkPicture.value)
+
 })
 
-const logout = () => {
+const logout = async () => {
   localStorage.setItem('logged', 'false')
   logged.value = false
-  router.push("/login")
+  await supabase.auth.signOut()
+  await router.push("/login")
 }
 
-onMounted(() => {
+onMounted(async () => {
+  const test = await supabase.auth.getUser()
+  url.value = test.data.user.user_metadata.picture
+
   if (localStorage.getItem('logged') === 'true') {
     logged.value = true
   } else {
@@ -95,6 +104,14 @@ header {
   background-color: #222222;
   min-height: 10vh;
 
+  img {
+    width: 4rem;
+    height: 4rem;
+    object-fit: cover;
+    border-radius: 50%;
+    margin: 0 auto;
+  }
+
   .input-search {
     height: 4rem;
     max-width: 50%;
@@ -103,6 +120,7 @@ header {
   nav {
     ul {
       display: flex;
+      align-items: center;
       list-style: none;
 
       li {
